@@ -2,7 +2,7 @@ import MainBgImg1 from "../../assets/image/MainBg1.png";
 
 export default function Home() {
   return (
-    <main className="w-full">
+    <main className="w-full bg-[#ffffff]">
       <section className="h-screen bg-scroll bg-contain bg-no-repeat bg-center overflow-y-auto"
         style={{
           backgroundImage: `url(${MainBgImg1})`,
