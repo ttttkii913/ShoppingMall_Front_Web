@@ -1,6 +1,7 @@
 import MainBgImg1 from "../../assets/image/MainBg1.png";
 import MainProductSection from "../../components/home/MainProductSection";
 import MainBestSeller from "../../components/home/MainBestSeller";
+import MainWeeklyProduct from "../../components/home/MainWeeklyProduct";
 
 export default function Home() {
   return (
@@ -50,6 +51,10 @@ export default function Home() {
 
         {/* section 3 */}
         <MainBestSeller />
+
+        {/* section 4 */}
+        <MainWeeklyProduct />
+
       </main>
     </div>
   );
