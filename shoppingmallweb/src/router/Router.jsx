@@ -3,6 +3,7 @@ import Test from "../pages/Test.jsx";
 import Home from "../pages/home/Home.jsx";
 import Header from "../components/header/Header.jsx";
 import Footer from "../components/footer/Footer.jsx";
+import Login from "../pages/login/Login.jsx";
 
 export default function Router() {
   return (
@@ -10,6 +11,7 @@ export default function Router() {
     <Header />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/test" element={<Test />} />
       </Routes>
     <Footer />
