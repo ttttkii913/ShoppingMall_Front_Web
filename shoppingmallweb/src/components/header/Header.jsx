@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { Search, ShoppingCart, Menu } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../../components/navigator/Navbar.jsx";
 
 export default function Header() {
   const [visible, setVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const navigate = useNavigate();
 
   const controlHeader = () => {
     if (window.scrollY > lastScrollY) {
@@ -27,6 +29,10 @@ export default function Header() {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
+  const handleLogin = () => {
+    navigate("/login");
+  }
+
   return (
     <>
       <header
@@ -43,7 +49,9 @@ export default function Header() {
             <ShoppingCart size={18} strokeWidth={1.5} />
           </button>
           <div className="w-px h-5 bg-gray-200"></div>
-          <button className="font-kirang tracking-[0.3em] text-ml hover:opacity-60 transition">
+          <button 
+          onClick={handleLogin}
+          className="font-kirang tracking-[0.3em] text-ml hover:opacity-60 transition">
             Login
           </button>
           <div className="w-px h-5 bg-gray-200"></div>
