@@ -1,4 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
+import GoogleLogin from "../../assets/image/GoogleLogin.png";
+import KakaoLogin from "../../assets/image/KakaoLogin.png";
+import NaverLogin from "../../assets/image/NaverLogin.png";
 
 export default function Login() {
   const [tab, setTab] = useState("member");
@@ -102,6 +105,23 @@ export default function Login() {
               <div className="flex-grow border-t border-gray-300"></div>
             </div>
 
+            <div className="flex justify-center gap-6">
+              <img
+                src={KakaoLogin}
+                alt="Kakao"
+                className="w-36 h-9 cursor-pointer"
+              />
+              <img
+                src={NaverLogin}
+                alt="Naver"
+                className="w-36 h-9 cursor-pointer"
+              />
+              <img
+                src={GoogleLogin}
+                alt="Google"
+                className="w-36 h-9 cursor-pointer"
+              />
+            </div>
           </div>
         </div>
       </div>
