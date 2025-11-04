@@ -41,7 +41,7 @@ export default function Product() {
   }, [isLoading]);
 
   return (
-    <div className="w-full min-h-screen bg-gray-50 flex flex-col items-center mt-20">
+    <div className="w-full min-h-screen bg-gray-50 flex flex-col items-center pt-20">
       {/* 상단 필터 라인 */}
       <div className="sticky top-20 z-10 w-full border-b border-gray-200">
         <div className="flex justify-between items-center w-full max-w-[1200px] mx-auto px-8 py-4 text-gray-400 text-sm tracking-[0.15em]">
