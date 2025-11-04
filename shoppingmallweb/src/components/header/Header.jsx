@@ -14,7 +14,7 @@ export default function Header() {
       // 아래로 스크롤시 안 보이게
       setVisible(false);
     } else {
-      // 위로 스크롤시 보이게 
+      // 위로 스크롤시 보이게
       setVisible(true);
     }
     setLastScrollY(window.scrollY);
@@ -29,33 +29,41 @@ export default function Header() {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-  const handleLogin = () => {
-    navigate("/login");
-  }
-
   return (
     <>
       <header
         className={`fixed top-0 left-0 w-full bg-black text-white flex items-center justify-between px-10 py-3 transition-transform duration-300 z-50
         ${visible ? "translate-y-0" : "-translate-y-full"}`}
       >
-        <h1 className="text-xl tracking-[0.2em] font-semibold">SHOPPING</h1>
+        <h1
+          onClick={() => navigate("/")}
+          className="text-xl tracking-[0.2em] font-semibold cursor-pointer hover:opacity-60 transition"
+        >
+          SHOPPING
+        </h1>
 
         <div className="flex items-center gap-6">
-          <button className="hover:opacity-60 transition">
+          <button className="hover:opacity-60 transition cursor-pointer">
             <Search size={18} strokeWidth={1.5} />
           </button>
-          <button className="hover:opacity-60 transition">
+          <button
+            onClick={() => navigate("/cart")}
+            className="hover:opacity-60 transition"
+          >
             <ShoppingCart size={18} strokeWidth={1.5} />
           </button>
           <div className="w-px h-5 bg-gray-200"></div>
-          <button 
-          onClick={handleLogin}
-          className="font-kirang tracking-[0.3em] text-ml hover:opacity-60 transition">
+          <button
+            onClick={() => navigate("/login")}
+            className="font-kirang tracking-[0.3em] text-ml hover:opacity-60 transition cursor-pointer"
+          >
             Login
           </button>
           <div className="w-px h-5 bg-gray-200"></div>
-          <button onClick={toggleSidebar} className="hover:opacity-60 transition">
+          <button
+            onClick={toggleSidebar}
+            className="hover:opacity-60 transition cursor-pointer"
+          >
             <Menu size={20} strokeWidth={1.5} />
           </button>
         </div>
