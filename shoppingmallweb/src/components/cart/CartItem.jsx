@@ -2,11 +2,12 @@ import { useState } from "react";
 import CartitemImg from "../../assets/image/ProductItemImg.png";
 import OptionModal from "./OptionModal";
 
-export default function CartItem({ item }) {
+export default function CartItem({ item, onUpdateOption }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleSaveOption = (data) => {
-    console.log("변경된 옵션:", data);
+    onUpdateOption(item.id, data);
+    setIsModalOpen(false);
   };
 
   return (
@@ -25,16 +26,18 @@ export default function CartItem({ item }) {
             <h2 className="font-semibold text-lg tracking-wider uppercase">
               {item.name}
             </h2>
-            <p className="text-ml text-gray-600 mt-1">- {item.option}</p>
+            <p className="text-ml text-gray-600 mt-1">
+              - SIZE: {item.option} / Quantity: {item.quantity}
+            </p>
           </div>
 
           <div className="flex justify-between items-center mt-4">
             <span className="font-medium text-gray-800">
-              ${item.price.toLocaleString()}
+              ${(item.price * item.quantity).toLocaleString()}
             </span>
             <button
               onClick={() => setIsModalOpen(true)}
-              className="text-sm tracking-widest bg-black text-white px-4 py-1.5 rounded-md hover:bg-gray-800 transition"
+              className="text-sm tracking-widest bg-black text-white px-4 py-1.5 rounded-md hover:bg-gray-600 transition"
             >
               CHANGE OPTION
             </button>

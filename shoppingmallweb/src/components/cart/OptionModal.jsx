@@ -20,22 +20,22 @@ export default function OptionModal({ isOpen, onClose, onSave }) {
 
         {/* 사이즈 선택 */}
         <div className="mb-5">
-          <label className="block text-sm font-medium mb-2">Size</label>
+          <label className="block  font-pretendard text-sm font-medium mb-2">SIZE</label>
           <select
             value={selectedSize}
             onChange={(e) => setSelectedSize(e.target.value)}
             className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-black"
           >
             <option value="ONE">ONE</option>
-            <option value="S">S</option>
-            <option value="M">M</option>
-            <option value="L">L</option>
+            <option value="Small">S</option>
+            <option value="Medium">M</option>
+            <option value="Large">L</option>
           </select>
         </div>
 
         {/* 수량 선택 */}
         <div className="mb-6">
-          <label className="block text-sm font-medium mb-2">Quantity</label>
+          <label className="block text-sm font-medium mb-2 font-pretendard">QUANTITY</label>
           <div className="flex items-center gap-3">
             <button
               onClick={() => setQuantity((prev) => Math.max(1, prev - 1))}
@@ -57,13 +57,13 @@ export default function OptionModal({ isOpen, onClose, onSave }) {
         <div className="flex justify-end gap-3 mt-6">
           <button
             onClick={onClose}
-            className="px-4 py-2 rounded-md border border-gray-300 hover:bg-gray-100 transition"
+            className="px-4 py-2 rounded-md border border-gray-300 hover:bg-gray-100 transition font-kirang"
           >
             Cancel
           </button>
           <button
             onClick={handleSave}
-            className="px-5 py-2 rounded-md bg-black text-white hover:bg-gray-800 transition"
+            className="px-5 py-2 rounded-md bg-black text-white hover:bg-gray-600 transition font-kirang"
           >
             Save
           </button>
