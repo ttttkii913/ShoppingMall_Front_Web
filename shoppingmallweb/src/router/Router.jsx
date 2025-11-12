@@ -7,6 +7,7 @@ import Login from "../pages/login/Login.jsx";
 import Product from "../pages/product/Product.jsx";
 import Cart from "../pages/cart/Cart.jsx";
 import MyPage from "../pages/mypage/MyPage.jsx";
+import ProductDetail from "../pages/productdetail/ProductDetail.jsx";
 
 export default function Router() {
   return (
@@ -16,6 +17,7 @@ export default function Router() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/product" element={<Product />} />
+        <Route path="/product/:id" element={<ProductDetail />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/test" element={<Test />} />
