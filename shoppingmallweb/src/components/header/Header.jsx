@@ -23,7 +23,7 @@ export default function Header() {
   useEffect(() => {
     window.addEventListener("scroll", controlHeader);
     return () => window.removeEventListener("scroll", controlHeader);
-  }, [lastScrollY]);
+  });
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
