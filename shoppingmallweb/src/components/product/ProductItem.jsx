@@ -2,7 +2,7 @@ import ProductItemImg from "../../assets/image/ProductItemImg.png";
 
 export default function ProductItem({ product }) {
   return (
-    <div className="flex flex-col items-center text-center bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition">
+    <div className="flex flex-col items-center text-center bg-white rounded-xl p-4 shadow-sm hover:shadow-lg transition">
       <img
         src={ProductItemImg}
         alt={product.name}
