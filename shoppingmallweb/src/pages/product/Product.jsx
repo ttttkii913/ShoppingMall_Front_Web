@@ -1,7 +1,9 @@
 import { useEffect, useState, useRef, useCallback } from "react";
+import { useNavigate } from "react-router-dom"; 
 import ProductItem from "../../components/product/ProductItem.jsx";
 
 export default function Product() {
+  const navigate = useNavigate(); 
   const [products, setProducts] = useState([]);
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
@@ -18,7 +20,7 @@ export default function Product() {
       }));
       setProducts((prev) => [...prev, ...newProducts]);
       setIsLoading(false);
-    }, 1200); // 로딩 지연 (1.2초)
+    }, 1200);
   }, [page]);
 
   useEffect(() => {
@@ -39,6 +41,11 @@ export default function Product() {
     if (loader.current) observer.observe(loader.current);
     return () => observer.disconnect();
   }, [isLoading]);
+
+  // 상품 클릭 시 페이지 이동
+  const handleClickProduct = (id) => {
+    navigate(`/product/${id}`);
+  };
 
   return (
     <div className="w-full min-h-screen bg-gray-50 flex flex-col items-center pt-20">
@@ -78,7 +85,9 @@ export default function Product() {
         "
       >
         {products.map((product) => (
-          <ProductItem key={product.id} product={product} />
+          <div key={product.id} onClick={() => handleClickProduct(product.id)}>
+            <ProductItem product={product} />
+          </div>
         ))}
       </div>
 
