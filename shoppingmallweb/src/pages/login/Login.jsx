@@ -4,7 +4,7 @@ import KakaoLogin from "../../assets/image/KakaoLogin.png";
 import NaverLogin from "../../assets/image/NaverLogin.png";
 
 export default function Login() {
-  const [tab, setTab] = useState("member");
+  const [tab, setTab] = useState("member"); // member / seller
   const memberRef = useRef(null);
   const sellerRef = useRef(null);
   const [indicatorStyle, setIndicatorStyle] = useState({ left: 0, width: 0 });
@@ -15,10 +15,60 @@ export default function Login() {
       const { offsetLeft, offsetWidth } = activeRef;
       setIndicatorStyle({
         left: offsetLeft + offsetWidth / 2,
-        width: offsetWidth * 1,
+        width: offsetWidth,
       });
     }
   }, [tab]);
+
+  const getSocialLoginUrl = (provider) => {
+    const status = tab === "seller" ? "SELLER" : "USER"; // 탭 선택에 따라 전송
+    const state = encodeURIComponent(status);
+
+    const config = {
+      google: {
+        clientId: import.meta.env.VITE_GOOGLE_CLIENT_ID,
+        redirectUri: import.meta.env.VITE_GOOGLE_REDIRECT_URI,
+        authUrl: "https://accounts.google.com/o/oauth2/v2/auth",
+        scope: "email profile",
+      },
+      kakao: {
+        clientId: import.meta.env.VITE_KAKAO_CLIENT_ID,
+        redirectUri: import.meta.env.VITE_KAKAO_REDIRECT_URI,
+        authUrl: "https://kauth.kakao.com/oauth/authorize",
+        scope: "profile_nickname,profile_image,account_email",
+      },
+      naver: {
+        clientId: import.meta.env.VITE_NAVER_CLIENT_ID,
+        redirectUri: import.meta.env.VITE_NAVER_REDIRECT_URI,
+        authUrl: "https://nid.naver.com/oauth2.0/authorize",
+        scope: "name,email",
+        state: crypto.randomUUID(),
+      },
+    };
+
+    const c = config[provider];
+    if (!c) return null;
+
+    let url = `${c.authUrl}?client_id=${c.clientId}&redirect_uri=${encodeURIComponent(
+      c.redirectUri
+    )}&response_type=code`;
+
+    if (c.scope) url += `&scope=${encodeURIComponent(c.scope)}`;
+
+    // 카카오/구글은 선택 상태(USER/SELLER) 전달
+    if (provider === "kakao" || provider === "google") {
+      url += `&state=${state}`;
+    } else if (c.state) {
+      url += `&state=${c.state}`;
+    }
+
+    return url;
+  };
+
+  const handleSocialLogin = (provider) => {
+    const url = getSocialLoginUrl(provider);
+    if (url) window.location.href = url;
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50 font-[Poppins]">
@@ -32,9 +82,7 @@ export default function Login() {
               ref={memberRef}
               onClick={() => setTab("member")}
               className={`px-6 pb-2 transition-colors duration-300 ${
-                tab === "member"
-                  ? "text-black"
-                  : "text-gray-400 hover:text-black"
+                tab === "member" ? "text-black" : "text-gray-400 hover:text-black"
               }`}
             >
               MEMBER
@@ -43,9 +91,7 @@ export default function Login() {
               ref={sellerRef}
               onClick={() => setTab("seller")}
               className={`px-6 pb-2 transition-colors duration-300 ${
-                tab === "seller"
-                  ? "text-black"
-                  : "text-gray-400 hover:text-black"
+                tab === "seller" ? "text-black" : "text-gray-400 hover:text-black"
               }`}
             >
               SELLER
@@ -110,16 +156,19 @@ export default function Login() {
                 src={KakaoLogin}
                 alt="Kakao"
                 className="w-36 h-9 cursor-pointer"
+                onClick={() => handleSocialLogin("kakao")}
               />
               <img
                 src={NaverLogin}
                 alt="Naver"
                 className="w-36 h-9 cursor-pointer"
+                onClick={() => handleSocialLogin("naver")}
               />
               <img
                 src={GoogleLogin}
                 alt="Google"
                 className="w-36 h-9 cursor-pointer"
+                onClick={() => handleSocialLogin("google")}
               />
             </div>
           </div>
