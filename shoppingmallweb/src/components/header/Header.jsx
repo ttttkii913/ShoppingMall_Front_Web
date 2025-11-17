@@ -7,6 +7,7 @@ export default function Header() {
   const [visible, setVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
 
   const controlHeader = () => {
@@ -25,8 +26,28 @@ export default function Header() {
     return () => window.removeEventListener("scroll", controlHeader);
   });
 
+  // 로그인 상태 확인
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken"); 
+    setIsLoggedIn(!!token);
+  }, []);
+
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
+  };
+
+  const handleAuthClick = () => {
+    if (isLoggedIn) {
+      // 로그아웃 확인
+      const confirmLogout = window.confirm("로그아웃 하시겠습니까?");
+      if (confirmLogout) {
+        localStorage.removeItem("accessToken");
+        setIsLoggedIn(false);
+        navigate("/");
+      }
+    } else {
+      navigate("/login");
+    }
   };
 
   return (
@@ -54,10 +75,10 @@ export default function Header() {
           </button>
           <div className="w-px h-5 bg-gray-200"></div>
           <button
-            onClick={() => navigate("/login")}
+            onClick={handleAuthClick}
             className="font-kirang tracking-[0.3em] text-ml hover:opacity-60 transition cursor-pointer"
           >
-            Login
+            {isLoggedIn ? "LOGOUT" : "LOGIN"}
           </button>
           <div className="w-px h-5 bg-gray-200"></div>
           <button
