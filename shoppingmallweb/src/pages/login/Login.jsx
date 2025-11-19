@@ -1,4 +1,5 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import GoogleLogin from "../../assets/image/GoogleLogin.png";
 import KakaoLogin from "../../assets/image/KakaoLogin.png";
 import NaverLogin from "../../assets/image/NaverLogin.png";
@@ -8,6 +9,7 @@ export default function Login() {
   const memberRef = useRef(null);
   const sellerRef = useRef(null);
   const [indicatorStyle, setIndicatorStyle] = useState({ left: 0, width: 0 });
+  const navigate = useNavigate();
 
   useEffect(() => {
     const activeRef = tab === "member" ? memberRef.current : sellerRef.current;
@@ -49,9 +51,9 @@ export default function Login() {
     const c = config[provider];
     if (!c) return null;
 
-    let url = `${c.authUrl}?client_id=${c.clientId}&redirect_uri=${encodeURIComponent(
-      c.redirectUri
-    )}&response_type=code`;
+    let url = `${c.authUrl}?client_id=${
+      c.clientId
+    }&redirect_uri=${encodeURIComponent(c.redirectUri)}&response_type=code`;
 
     if (c.scope) url += `&scope=${encodeURIComponent(c.scope)}`;
 
@@ -82,7 +84,9 @@ export default function Login() {
               ref={memberRef}
               onClick={() => setTab("member")}
               className={`px-6 pb-2 transition-colors duration-300 ${
-                tab === "member" ? "text-black" : "text-gray-400 hover:text-black"
+                tab === "member"
+                  ? "text-black"
+                  : "text-gray-400 hover:text-black"
               }`}
             >
               MEMBER
@@ -91,7 +95,9 @@ export default function Login() {
               ref={sellerRef}
               onClick={() => setTab("seller")}
               className={`px-6 pb-2 transition-colors duration-300 ${
-                tab === "seller" ? "text-black" : "text-gray-400 hover:text-black"
+                tab === "seller"
+                  ? "text-black"
+                  : "text-gray-400 hover:text-black"
               }`}
             >
               SELLER
@@ -127,7 +133,7 @@ export default function Login() {
               </div>
               <button
                 type="submit"
-                className="bg-black text-white px-8 py-3 font-semibold tracking-[0.4em] hover:bg-gray-800 transition h-[98px]"
+                className="bg-black text-white px-8 py-3 font-semibold tracking-[0.4em] hover:bg-gray-600 transition h-[98px]"
               >
                 Login
               </button>
@@ -136,9 +142,24 @@ export default function Login() {
 
           {/* id 관련 */}
           <div className="flex justify-center gap-4 mt-4 text-sm">
-            <button className="hover:underline">아이디 찾기</button>
-            <button className="hover:underline">비밀번호 찾기</button>
-            <button className="hover:underline">회원가입</button>
+            <button
+              className="hover:underline hover:text-gray-600"
+              onClick={() => navigate("/get/id")}
+            >
+              아이디 찾기
+            </button>
+            <button
+              className="hover:underline hover:text-gray-600"
+              onClick={() => navigate("/get/pw")}
+            >
+              비밀번호 찾기
+            </button>
+            <button
+              className="hover:underline hover:text-gray-600"
+              onClick={() => navigate("/join")}
+            >
+              회원가입
+            </button>
           </div>
 
           {/* SNS 로그인 */}
@@ -155,19 +176,19 @@ export default function Login() {
               <img
                 src={KakaoLogin}
                 alt="Kakao"
-                className="w-36 h-9 cursor-pointer"
+                className="w-36 h-9 cursor-pointer hover:shadow-sm"
                 onClick={() => handleSocialLogin("kakao")}
               />
               <img
                 src={NaverLogin}
                 alt="Naver"
-                className="w-36 h-9 cursor-pointer"
+                className="w-36 h-9 cursor-pointer hover:shadow-sm"
                 onClick={() => handleSocialLogin("naver")}
               />
               <img
                 src={GoogleLogin}
                 alt="Google"
-                className="w-36 h-9 cursor-pointer"
+                className="w-36 h-9 cursor-pointer hover:shadow-sm"
                 onClick={() => handleSocialLogin("google")}
               />
             </div>
