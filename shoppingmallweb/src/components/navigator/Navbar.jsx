@@ -25,9 +25,9 @@ export default function Navbar({ isOpen, onClose }) {
         </div>
 
         <nav className="flex flex-col items-center justify-center font-kirang font-semibold text-3xl p-60 gap-15 text-gray-800 tracking-[1rem]">
-          <Link to="/" className="hover:text-blue-500 transition">HOME</Link>
-          <Link to="/mypage" className="hover:text-blue-500 transition">MYPAGE</Link>
-          <Link to="/product" className="hover:text-blue-500 transition">PRODUCT</Link>
+          <Link to="/" onClick={onClose} className="hover:text-blue-500 transition">HOME</Link>
+          <Link to="/mypage" onClick={onClose} className="hover:text-blue-500 transition">MYPAGE</Link>
+          <Link to="/product" onClick={onClose} className="hover:text-blue-500 transition">PRODUCT</Link>
         </nav>
 
         <p className="text-lg absolute right-0 bottom-10 pr-10 text-gray-700 font-kirang">
