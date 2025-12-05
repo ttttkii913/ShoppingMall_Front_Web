@@ -1,12 +1,17 @@
 import { useState, useEffect } from "react";
 import UserInfoForm from "./UserInfoForm";
 import axiosInstance from "../login/AxiosInstance";
+import UserChatList from "../chat/UserChatList";
+import { useNavigate } from "react-router-dom";
 
 export default function Mypage() {
   const [activeMenu, setActiveMenu] = useState("view");
-  const [name, setName] = useState(""); 
+  const [name, setName] = useState("");
   const [loading, setLoading] = useState(true);
-  
+
+  const navigate = useNavigate();
+  const [roomId, setRoomId] = useState(null);
+
   useEffect(() => {
     const fetchName = async () => {
       try {
@@ -20,6 +25,11 @@ export default function Mypage() {
     };
     fetchName();
   }, []);
+
+  const handleSelectRoom = (id) => {
+    setRoomId(id);
+    navigate(`/chatting/${id}`);
+  };
 
   return (
     <div className="min-h-screen bg-[#f8f8f8] text-[#111] pt-10">
@@ -78,7 +88,7 @@ export default function Mypage() {
                 </li>
               </ul>
             </div>
-            <div>
+            <div className="mb-10">
               <h2 className="border-b-2 border-gray-700 pb-1 mb-3 tracking-widest">
                 ORDER
               </h2>
@@ -91,14 +101,47 @@ export default function Mypage() {
                 </li>
               </ul>
             </div>
-          </aside>
 
+            <div>
+              <h2 className="border-b-2 border-gray-700 pb-1 mb-3 tracking-wider">
+                CHAT
+              </h2>
+              <ul className="space-y-3 text-[15px]">
+                <li
+                  onClick={() => setActiveMenu("chat")}
+                  className={`cursor-pointer ${
+                    activeMenu === "chat"
+                      ? "font-bold text-black"
+                      : "text-gray-400"
+                  }`}
+                >
+                  내 채팅 조회
+                </li>
+              </ul>
+            </div>
+          </aside>
           <section className="col-span-9">
             <h2 className="border-b-2 border-gray-700 pb-1 mb-8 tracking-widest">
-              INFO
+              {activeMenu === "chat" ? "CHAT" : "INFO"}
             </h2>
+
             {activeMenu === "view" && <UserInfoForm mode="view" />}
-            {activeMenu === "edit" && ( <UserInfoForm mode="edit" onSuccess={(updatedName) => { setActiveMenu("view"); setName(updatedName) }} /> )}
+            {activeMenu === "edit" && (
+              <UserInfoForm
+                mode="edit"
+                onSuccess={(updatedName) => {
+                  setActiveMenu("view");
+                  setName(updatedName);
+                }}
+              />
+            )}
+
+            {activeMenu === "chat" && (
+              <UserChatList
+                onSelectRoom={handleSelectRoom}
+                currentRoomId={roomId}
+              />
+            )}
           </section>
         </div>
       </main>
