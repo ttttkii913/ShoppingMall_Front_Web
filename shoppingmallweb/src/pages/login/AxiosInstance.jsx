@@ -79,7 +79,7 @@ axiosInstance.interceptors.response.use(
 
       try {
         const res = await axios.post(
-          `${import.meta.env.VITE_API_BASE_URL}/login/refresh`,
+          `${import.meta.env.VITE_API_BASE_URL}/login/refreshtoken`,
           {},
           { withCredentials: true }
         );
