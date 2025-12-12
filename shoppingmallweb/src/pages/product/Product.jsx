@@ -1,33 +1,51 @@
 import { useEffect, useState, useRef, useCallback } from "react";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
+import axiosInstance from "../login/AxiosInstance.jsx";
 import ProductItem from "../../components/product/ProductItem.jsx";
 
 export default function Product() {
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
+
   const [products, setProducts] = useState([]);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [isLast, setIsLast] = useState(false);
+
   const loader = useRef(null);
 
-  // 상품 데이터 로드
-  const fetchProducts = useCallback(() => {
+  // 상품 조회
+const fetchProducts = useCallback(async () => {
+  if (isLoading || isLast) return;
+
+  try {
     setIsLoading(true);
-    setTimeout(() => {
-      const newProducts = Array.from({ length: 9 }).map((_, i) => ({
-        id: (page - 1) * 12 + i + 1,
-        name: "COTTON BAG",
-        price: "74,000",
-      }));
-      setProducts((prev) => [...prev, ...newProducts]);
-      setIsLoading(false);
-    }, 1200);
-  }, [page]);
+    const res = await axiosInstance.get(`/product/all?page=${page}&size=6`);
+    const list = res.data?.data?.products || [];
+
+    if (list.length < 6) setIsLast(true);
+
+    const mapped = list.map((p) => ({
+      id: p.productId,
+      name: p.name,
+      price: p.price.toLocaleString(),
+      image: p.imageUrl || null,
+      options: p.options,
+    }));
+
+    setProducts((prev) => [...prev, ...mapped]);
+  } catch (e) {
+    console.error("상품 조회 실패:", e);
+  } finally {
+    setIsLoading(false);
+  }
+}, [page, isLoading, isLast]);
+
 
   useEffect(() => {
     fetchProducts();
   }, [fetchProducts]);
 
-  // Intersection Observer (무한 스크롤)
+  // 무한스크롤 IntersectionObserver
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -39,10 +57,10 @@ export default function Product() {
     );
 
     if (loader.current) observer.observe(loader.current);
-    return () => observer.disconnect();
-  }, [isLoading]);
 
-  // 상품 클릭 시 페이지 이동
+    return () => observer.disconnect();
+  }, [isLoading, isLast]);
+
   const handleClickProduct = (id) => {
     navigate(`/product/${id}`);
   };
@@ -85,21 +103,24 @@ export default function Product() {
         "
       >
         {products.map((product) => (
-          <div key={product.id} onClick={() => handleClickProduct(product.id)}>
+          <div
+            key={product.id}
+            onClick={() => handleClickProduct(product.id)}
+          >
             <ProductItem product={product} />
           </div>
         ))}
       </div>
 
       {/* 로딩 트리거 */}
-      <div
-        ref={loader}
-        className="h-32 flex justify-center items-center text-gray-500"
-      >
-        {isLoading ? (
-          <div className="animate-pulse text-gray-400 font-kirang">Loading more...</div>
-        ) : (
-          <span className="text-gray-300 text-sm font-kirang">▼ Scroll for more ▼</span>
+      <div ref={loader} className="h-20 flex justify-center items-center">
+        {isLoading && (
+          <div className="animate-pulse text-gray-400 font-kirang">
+            Loading...
+          </div>
+        )}
+        {!isLoading && isLast && (
+          <span className="text-gray-400 text-sm font-kirang">마지막 상품입니다.</span>
         )}
       </div>
     </div>
