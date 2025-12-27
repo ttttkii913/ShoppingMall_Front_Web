@@ -1,35 +1,60 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ChevronDown, ChevronUp, ChevronLeft, ChevronRight } from "lucide-react";
 import { useParams } from "react-router-dom";
-import ProductMain1 from "../../assets/image/ProductItemImg.png";
-import ProductDetailImg from "../../assets/image/ProductDetail.png";
 import ReviewItem from "../review/ReviewItem.jsx";
 import ProductSidebar from "./ProductSidebar.jsx";
 import ProductSize from "./ProductSize.jsx";
+import axiosInstance from "../login/AxiosInstance.jsx";
 
 export default function ProductDetail() {
   const { id } = useParams();
   const [activeTab, setActiveTab] = useState("info");
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [product, setProduct] = useState(null);
 
-  const dummyProducts = {
-    1: {
-      name: "Cotton Bag",
-      price: 29900,
-      description: "상세 정보",
-      mainImg: ProductMain1,
-      detailImg: ProductDetailImg,
-    },
-    2: {
-      name: "린넨 셔츠",
-      price: 39900,
-      description: "상세 정보",
-      mainImg: ProductMain1,
-      detailImg: ProductDetailImg,
-    },
-  };
+useEffect(() => {
+  if (!id) return;
+    const fetchProductDetail = async () => {
+      try {
+        const res = await axiosInstance.get("/product/detail", {
+          params: {
+            productId: id,
+          },
+        });
 
-  const product = dummyProducts[id];
+        setProduct(res.data.data);
+      } catch (error) {
+        console.error("상품 상세 조회 실패:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProductDetail();
+  }, [id]);
+
+  if (loading) return <div className="py-20 text-center">로딩 중...</div>;
+  if (!product) return <div className="py-20 text-center">상품 없음 😢</div>;
+
+
+  // const dummyProducts = {
+  //   1: {
+  //     name: "Cotton Bag",
+  //     price: 29900,
+  //     description: "상세 정보",
+  //     mainImg: ProductMain1,
+  //     detailImg: ProductDetailImg,
+  //   },
+  //   2: {
+  //     name: "린넨 셔츠",
+  //     price: 39900,
+  //     description: "상세 정보",
+  //     mainImg: ProductMain1,
+  //     detailImg: ProductDetailImg,
+  //   },
+  // };
+
   if (!product) return <div className="text-center py-20">상품을 찾을 수 없습니다 😢</div>;
 
   const images = [product.mainImg, product.detailImg];
@@ -166,7 +191,7 @@ export default function ProductDetail() {
                   case "info":
                     return (
                       <div className="p-6 text-gray-700 leading-relaxed font-pretendard">
-                        <p className="font-semibold">{product.description}</p>
+                        <p className="font-semibold">{product.info}</p>
                         {product.detailImg && (
                           <img
                             src={product.detailImg}

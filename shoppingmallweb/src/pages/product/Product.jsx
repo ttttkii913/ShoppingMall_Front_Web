@@ -14,7 +14,7 @@ export default function Product() {
   const loader = useRef(null);
 
   // 상품 조회
-const fetchProducts = useCallback(async () => {
+  const fetchProducts = useCallback(async () => {
   if (isLoading || isLast) return;
 
   try {
